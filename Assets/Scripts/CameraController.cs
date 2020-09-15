@@ -15,9 +15,17 @@ public class CameraController : MonoBehaviour
      Quaternion newRotation;
 
      Vector3 newZoom;
-    [SerializeField] Vector3 zoomAmount;
+    [SerializeField] private Vector3 zoomAmount;
+    [SerializeField] private Vector3 zoomAmountMouse;
 
-    [SerializeField] Transform cameraTransform;
+    [SerializeField] private Transform cameraTransform;
+
+
+    [SerializeField] private  Vector3 dragStartPosition;
+    [SerializeField] private Vector3 dragCurrentPositon;
+
+    [SerializeField] private Vector3 rotateStartPosition;
+    [SerializeField] private Vector3 rotateCurrentPositon;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +39,62 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandleMouseInput();
         HandleMovementInput();
     }
 
+   private void HandleMouseInput()
+    {
+          if(Input.mouseScrollDelta.y != 0)
+        {
+            newZoom += Input.mouseScrollDelta.y * zoomAmountMouse;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            float entry;
+
+            if(plane.Raycast(ray, out entry))
+            {
+                dragStartPosition = ray.GetPoint(entry);
+            }
+
+        }
+
+        else if(Input.GetMouseButton(0))
+        {
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                float entry;
+
+                if (plane.Raycast(ray, out entry))
+                {
+                    dragCurrentPositon = ray.GetPoint(entry);
+                    newPosition = transform.position + dragStartPosition - dragCurrentPositon;
+                }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            rotateStartPosition = Input.mousePosition;
+        }
+        if (Input.GetMouseButton(1))
+        {
+            rotateCurrentPositon = Input.mousePosition;
+
+
+            Vector3 diff = rotateStartPosition - rotateCurrentPositon;
+
+            rotateStartPosition = rotateCurrentPositon;
+            newRotation *= Quaternion.Euler(Vector3.up * (-diff.x / 5f));
+        }
+    }
     private void HandleMovementInput()
     {
         //Detect if is pressing shift to move faster or not
@@ -48,11 +109,11 @@ public class CameraController : MonoBehaviour
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
 
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        if (Input.GetKey(KeyCode.R))
         {
             newZoom += zoomAmount;
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        else if (Input.GetKey(KeyCode.F))
         {
             newZoom -= zoomAmount;
         }

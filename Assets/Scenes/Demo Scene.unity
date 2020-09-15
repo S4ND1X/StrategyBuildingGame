@@ -23833,8 +23833,13 @@ MonoBehaviour:
   fastSpeed: 1
   movementTime: 3
   rotationAmount: 0.5
-  zoomAmount: {x: 0, y: -10, z: 10}
+  zoomAmount: {x: 0, y: -2, z: 2}
+  zoomAmountMouse: {x: 0, y: -10, z: 10}
   cameraTransform: {fileID: 1405222035}
+  dragStartPosition: {x: 0, y: 0, z: 0}
+  dragCurrentPositon: {x: 0, y: 0, z: 0}
+  rotateStartPosition: {x: 0, y: 0, z: 0}
+  rotateCurrentPositon: {x: 0, y: 0, z: 0}
 --- !u!4 &866553528
 Transform:
   m_ObjectHideFlags: 0
@@ -38846,7 +38851,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 16
-  far clip plane: 500
+  far clip plane: 2000
   field of view: 10
   orthographic: 0
   orthographic size: 79.05
