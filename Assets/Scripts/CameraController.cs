@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+
     [SerializeField] private float normalSpeed;
     [SerializeField] private float fastSpeed;
     private float movementSpeed;
@@ -27,9 +28,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector3 rotateStartPosition;
     [SerializeField] private Vector3 rotateCurrentPositon;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        
         newPosition = transform.position;
         newRotation = transform.rotation;
         newZoom = cameraTransform.localPosition;
