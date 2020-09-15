@@ -10,15 +10,22 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float movementTime;
     [SerializeField] private float rotationAmount;
 
-    [SerializeField] Vector3 newPosition;
+     Vector3 newPosition;
 
-    [SerializeField] Quaternion newRotation;
+     Quaternion newRotation;
+
+     Vector3 newZoom;
+    [SerializeField] Vector3 zoomAmount;
+
+    [SerializeField] Transform cameraTransform;
 
     // Start is called before the first frame update
     void Start()
     {
         newPosition = transform.position;
         newRotation = transform.rotation;
+        newZoom = cameraTransform.localPosition;
+
     }
 
     // Update is called once per frame
@@ -41,8 +48,20 @@ public class CameraController : MonoBehaviour
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
 
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        {
+            newZoom += zoomAmount;
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        {
+            newZoom -= zoomAmount;
+        }
+
+
+
         transform.localPosition = Vector3.Lerp(transform.localPosition, newPosition, Time.deltaTime * movementTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
 
     }
 }
